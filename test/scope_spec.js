@@ -41,4 +41,54 @@ describe("digest", function() {
 
 		expect(watchFn).toHaveBeenCalledWith(scope);
 	})
+
+	it("calls the listener function when the watched value changes", function() {
+		scope.somevalue = 'a';
+		scope.counter = 0;
+
+		scope.$watch(
+			function(scope) { return scope.somevalue; },
+			function(newValue, oldValue, scope) { scope.counter++;}
+		)
+
+		expect(scope.counter).toBe(0);
+
+		scope.$digest();
+		expect(scope.counter).toBe(1);
+
+		scope.$digest();
+		expect(scope.counter).toBe(1);
+
+		scope.somevalue = 'b';
+		expect(scope.counter).toBe(1);
+		
+		scope.$digest();
+		expect(scope.counter).toBe(2);
+
+
+
+	})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
