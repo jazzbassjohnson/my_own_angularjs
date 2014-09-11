@@ -39,6 +39,6 @@ describe("digest", function() {
 
 		scope.$digest();
 
-		expect(watchFn).toHaveBeenCalled(scope);
+		expect(watchFn).toHaveBeenCalledWith(scope);
 	})
 })
