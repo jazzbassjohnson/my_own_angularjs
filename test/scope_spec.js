@@ -43,13 +43,13 @@ describe("digest", function() {
 	})
 
 	it("calls the listener function when the watched value changes", function() {
-		scope.somevalue = 'a';
+		scope.someValue = 'a';
 		scope.counter = 0;
 
 		scope.$watch(
-			function(scope) { return scope.somevalue; },
+			function(scope) { return scope.someValue; },
 			function(newValue, oldValue, scope) { scope.counter++;}
-		)
+		);
 
 		expect(scope.counter).toBe(0);
 
@@ -67,7 +67,7 @@ describe("digest", function() {
 
 
 
-	})
+	});
 
 
 
