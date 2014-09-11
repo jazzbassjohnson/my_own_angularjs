@@ -29,5 +29,16 @@ describe("digest", function() {
 		scope.$digest();
 
 		expect(listenerFn).toHaveBeenCalled();
+	});
+
+	it("calls the watch function with the scope as its argument", function() {
+		var watchFn = jasmine.createSpy();
+		var listenerFn = function() { };
+
+		scope.$watch(watchFn, listenerFn);
+
+		scope.$digest();
+
+		expect(watchFn).toHaveBeenCalled(scope);
 	})
 })
