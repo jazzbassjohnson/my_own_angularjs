@@ -87,7 +87,7 @@ describe("digest", function() {
       function(newValue, oldValue, scope) { oldValueGiven = oldValue }
     );
 
-    scope.digest();
+    scope.$digest();
     expect(oldValueGiven).toBe(123);
   });
 });

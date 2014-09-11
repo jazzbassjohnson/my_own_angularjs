@@ -6,7 +6,8 @@ function Scope() {
   this.$$watchers = [];
 }
 
-function initWatchVal() {}
+function initWatchVal() {
+}
 
 Scope.prototype.$watch = function(watchFn, listenerFn) {
   var watcher = {
@@ -25,7 +26,8 @@ Scope.prototype.$digest = function() {
         oldValue = watcher.last;
         if (newValue !== oldValue) {
           watcher.last = newValue;
-          watcher.listenerFn(newValue, oldValue, self);
+          watcher.listenerFn(newValue, 
+            (oldValue === initWatchVal ? newValue : oldValue), self);
         }
     }); 
 };
