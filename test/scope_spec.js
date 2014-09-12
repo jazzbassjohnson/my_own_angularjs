@@ -159,11 +159,11 @@ describe("digest", function() {
       )
     });
 
-    scope.digest();
+    scope.$digest();
     expect(watchExecutions).toBe(200);
 
     scope.array[0] = 420;
-    scope.digest();
+    scope.$digest();
     expect(watchExecutions).toBe(301);
   });
 });
