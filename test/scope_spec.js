@@ -271,13 +271,13 @@ describe("digest", function() {
         scope.$evalAsync(function(scope){
           scope.asyncEvaluated = true;
         });
-        scope.asyncEvaluatedImmediately = asyncEvaluated;
+        scope.asyncEvaluatedImmediately = scope.asyncEvaluated;
       }
     );
 
     scope.$digest();
-    expect(asyncEvaluated).toBe(true);
-    expect(asyncEvaluatedImmediately).toBe(false);
+    expect(scope.asyncEvaluated).toBe(true);
+    expect(scope.asyncEvaluatedImmediately).toBe(false);
   });
 
 });
