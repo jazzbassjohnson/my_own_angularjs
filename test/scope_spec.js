@@ -303,6 +303,7 @@ describe("digest", function() {
   it("executes $evalAsynced functions even when not dirty", function() {
     scope.aValue = [1, 2, 3];
     scope.asyncEvaluatedTimes = 0;
+    scope.counter = 0;
 
     scope.$watch(
       function(scope) {
