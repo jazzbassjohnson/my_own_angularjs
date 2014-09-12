@@ -183,7 +183,7 @@ describe("digest", function() {
       }
     );
 
-    scope.digest();
+    scope.$digest();
     expect(scope.counter).toBe(1);
 
   });
