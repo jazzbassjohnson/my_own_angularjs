@@ -260,4 +260,24 @@ describe("digest", function() {
     expect(scope.counter).toBe(2);
   });
 
+  it("evaluates $evalAsynced functions in the same cycle", function() {
+    scope.aValue = [1, 2, 3, 4];
+    scope.asyncEvaluated = false;
+    scope.asyncEvaluatedImmediately = false;
+
+    scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.$evalAsync(function(scope){
+          scope.asyncEvaluated = true;
+        });
+        scope.asyncEvaluatedImmediately = asyncEvaluated;
+      }
+    );
+
+    scope.$digest();
+    expect(asyncEvaluated).toBe(true);
+    expect(asyncEvaluatedImmediately).toBe(false);
+  });
+
 });
