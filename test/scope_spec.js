@@ -217,8 +217,17 @@ describe("digest", function() {
     scope.$digest();
     expect(scope.counter).toBe(1);
 
-    scope.$digest();
+    scope.$digest(); 
     expect(scope.counter).toBe(1);
+  });
+
+  it("executes eval'ed functions and returns result", function() {
+    scope.aValue = 42;
+
+    var result = scope.$eval(function(scope) {
+      return scope.aValue;
+    });
+
   });
 
 });
