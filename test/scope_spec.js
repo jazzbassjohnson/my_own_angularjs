@@ -300,5 +300,22 @@ describe("digest", function() {
     expect(scope.asyncEvaluated).toBe(true);
   });
 
+  it("executes $evalAsynced functions even when not dirty", function() {
+    scope.aValue = [1, 2, 3];
+    scope.asyncEvaluatedTimes = 0;
 
+    scope.$watch(
+      function(scope) {
+        if(scope.asyncEvaluatedTimes < 2) {
+          scope.$evalAsync(function(scope) {
+            scope.asyncEvaluatedTimes++;
+          });
+        }
+      },
+      function(newValue, oldValue, scope) {}
+    );
+
+    scope.$digest();
+    expect(scope.asyncEvaluatedTimes).toBe(2);
+  });
 });
