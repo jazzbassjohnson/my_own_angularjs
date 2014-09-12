@@ -227,6 +227,7 @@ describe("digest", function() {
     var result = scope.$eval(function(scope) {
       return scope.aValue;
     });
+
     expect(result).toBe(42);
   });
 
@@ -238,6 +239,25 @@ describe("digest", function() {
     }, 2);
 
     expect(result).toBe(44);
+  });
+
+  it("executes $apply'ed functions and starts the digest", function() {
+    scope.aValue = 'someValue';
+    scope.counter = 0;
+
+    scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) { scope.counter++; }
+    );
+
+    scope.$digest();
+    expect(scope.counter).toBe(1);
+
+    scope.$apply(function(scope) {
+      scope.aValue = 'someOtherValue';
+    });
+
+    expect(scope.counter).toBe(2);
   });
 
 });
