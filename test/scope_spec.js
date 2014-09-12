@@ -311,6 +311,7 @@ describe("digest", function() {
             scope.asyncEvaluatedTimes++;
           });
         }
+        return scope.aValue;
       },
       function(newValue, oldValue, scope) {}
     );
