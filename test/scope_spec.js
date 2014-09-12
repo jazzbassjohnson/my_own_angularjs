@@ -227,7 +227,7 @@ describe("digest", function() {
     var result = scope.$eval(function(scope) {
       return scope.aValue;
     });
-
+    expect(result).toBe(42);
   });
 
 });
