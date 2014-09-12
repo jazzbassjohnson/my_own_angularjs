@@ -20,7 +20,7 @@ describe("digest", function() {
     scope = new Scope();
   });
 
-  it("calls the listener functionof a watch on first $digest", function() {
+  it("calls the listener function of a watch on first $digest", function() {
     var watchFn = function() { return 'wat';};
     var listenerFn = jasmine.createSpy();
 
@@ -97,5 +97,34 @@ describe("digest", function() {
 
     scope.$digest();
     expect(watchFn).toHaveBeenCalled();
+  });
+
+  it("triggers chained watchers in the same digest", function() {
+    scope.name = "Gary";
+
+    scope.$watch(
+      function(scope) { return scope.nameUpper },
+      function(newValue, oldValue, scope) { 
+        if(newValue) {
+          scope.initial = newValue.substring(0,1) + '.';
+        }
+      }
+    );
+
+    scope.$watch(
+      function(scope) { return scope.name },
+      function(newValue, oldValue, scope) {
+        if(newValue) {
+          scope.nameUpper = newValue.toUpperCase();
+        }
+      }
+    );
+
+    scope.$digest();
+    expect(scope.initial).toBe('G.');
+
+    scope.name = "Amani";
+    scope.$digest();
+    expect(scope.initial).toBe('A.');
   });
 });
