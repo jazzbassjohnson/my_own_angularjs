@@ -146,7 +146,7 @@ describe("digest", function() {
       function(newValue, oldValue, scope) { scope.counterA++; }
     );
 
-    expect((function(){ scope.digest(); })).toThrow();
+    expect((function(){ scope.$digest(); })).toThrow();
   });
 
   it("ends the digest when the last watch is clean", function() {
@@ -554,6 +554,35 @@ describe("digest", function() {
 
     scope.$digest();
     expect(watchCalls).toEqual(['first', 'second', 'third', 'first', 'third']);
+  });
+
+  it("allows a watch to destroy another during a digest", function() {
+    scope.aValue = 'abc';
+    scope.counter = 0;
+
+    scope.$watch(
+      function(scope) {
+        return scope.aValue;
+      },
+      function(newValue, oldValue, scope) {
+        killSwitch();
+      }
+    );
+
+    var killSwitch = scope.$watch(
+      function(scope) {},
+      function(newValue, oldValue, scope) {}
+    );
+
+    scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.counter++;
+      }
+    );
+
+    scope.$digest();
+    expect(scope.counter).toBe(1);
   });
 
 });
