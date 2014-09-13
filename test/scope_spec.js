@@ -421,5 +421,23 @@ describe("digest", function() {
 
   });
 
+  it("catches expections in watch functions and continues", function() {
+    scope.aValue = 'abc';
+    scope.counter = 0;
+
+    scope.$watch(
+      function(scope) { throw 'error' },
+      function(newValue, oldValue, scope) {}
+    );
+
+    scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.counter++;
+      }
+    );
+    scope.$digest();
+    expect(scope.counter).toBe(1);
+  });
 
 });
