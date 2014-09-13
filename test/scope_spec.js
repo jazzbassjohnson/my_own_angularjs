@@ -17,8 +17,11 @@ describe("digest", function() {
   var scope;
 
   beforeEach(function() {
+    jasmine.clock().install();
     scope = new Scope();
   });
+
+
 
   it("calls the listener function of a watch on first $digest", function() {
     var watchFn = function() { return 'wat';};
@@ -375,12 +378,12 @@ describe("digest", function() {
 
     expect(scope.counter).toBe(0);
 
-    waitFor(setTimeout(function() {
+    setTimeout(function() {
           expect(scope.counter).toBe(1);
           // fix() 'expect' function is not being called inside this setTimout
           console.log('expect was called inside the setTimeout')
           done();
-        }, 50));
+        }, 50);
   });
 
   it("runs a $$postDigest function after each digest", function(){
@@ -474,10 +477,10 @@ describe("digest", function() {
       throw 'error';
     });
 
-    waitFor(setTimeout(function() {
-          expect(scope.counter).toBe(0);
-          done();
-        }, 50));
+    setTimeout(function() {
+      expect(scope.counter).toBe(0);
+      done();
+    }, 50);
 
   });
 
