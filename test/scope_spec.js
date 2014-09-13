@@ -21,7 +21,9 @@ describe("digest", function() {
     scope = new Scope();
   });
 
-
+  afterEach(function() {
+    jasmine.clock().uninstall();
+  });
 
   it("calls the listener function of a watch on first $digest", function() {
     var watchFn = function() { return 'wat';};
