@@ -35,7 +35,7 @@ Scope.prototype.$digest = function() {
         }
 
         dirty = this.$$digestOnce();
-        if(dirty && !(ttl--)) {
+        if((dirty || this.$$asyncQueue.length) && !(ttl--)) {
             throw "10 (max) digest iterations reached";
         }
     } while(dirty || this.$$asyncQueue.length);
