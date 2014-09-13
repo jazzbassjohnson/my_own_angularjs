@@ -608,4 +608,5 @@ describe("digest", function() {
     expect(scope.counter).toBe(0);
   });
 
+
 });
