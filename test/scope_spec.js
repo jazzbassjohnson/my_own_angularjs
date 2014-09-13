@@ -526,4 +526,34 @@ describe("digest", function() {
 
   });
 
+  it("allows destroying a $watch during digest", function() {
+    scope.aValue = 'abc';
+    var watchCalls = [];
+    
+
+    scope.$watch(
+      function(scope) {
+        watchCalls.push('first');
+        return scope.aValue;
+      }
+    );
+
+    var killSwitch = scope.$watch(
+      function(scope) {
+        watchCalls.push('second');
+        killSwitch();
+      }
+    );
+
+    scope.$watch(
+      function(scope) {
+        watchCalls.push('third');
+        return scope.aValue;
+      }
+    );
+
+    scope.$digest();
+    expect(watchCalls).toEqual(['first', 'second', 'third', 'first', 'third']);
+  });
+
 });
