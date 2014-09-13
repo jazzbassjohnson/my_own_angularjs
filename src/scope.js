@@ -28,7 +28,6 @@ Scope.prototype.$digest = function() {
     var ttl = 10;
     var dirty;
     this.$$lastDirtyWatch = null;
-
     do {
         while(this.$$asyncQueue.length) {
             var asyncTask = this.$$asyncQueue.shift();
@@ -91,7 +90,11 @@ Scope.prototype.$evalAsync = function(expr) {
 
 Scope.prototype.$beginPhase = function(phase) {
     if(this.$$phase) {
-        throw this.$$phase + 'already in process'
+        throw this.$$phase + 'already in process';
     }
     this.$$phase = phase;
-}
+};
+
+Scope.prototype.$clearPhase = function() {
+    this.$$phase = null;
+};
