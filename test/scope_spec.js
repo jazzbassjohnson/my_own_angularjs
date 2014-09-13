@@ -431,7 +431,7 @@ describe("digest", function() {
     scope.counter = 0;
 
     scope.$watch(
-      function(scope) { throw 'error' },
+      function(scope) { throw 'Desired error :)' },
       function(newValue, oldValue, scope) {}
     );
 
@@ -451,7 +451,7 @@ describe("digest", function() {
 
     scope.$watch(
       function(scope) { },
-      function(newValue, oldValue, scope) { throw 'error'}
+      function(newValue, oldValue, scope) { throw 'Desired error :)'}
     );
 
     scope.$watch(
@@ -476,7 +476,7 @@ describe("digest", function() {
     );
 
     scope.$evalAsync(function(scope) {
-      throw 'error';
+      throw 'Desired error :)';
     });
 
     setTimeout(function() {
@@ -490,7 +490,7 @@ describe("digest", function() {
     var didRun = false;
 
     scope.$$postDigest(function() {
-      throw 'error';
+      throw 'Desired error :)';
     });
 
     scope.$$postDigest(function() {
@@ -501,6 +501,29 @@ describe("digest", function() {
     expect(didRun).toBe(true);
   });
 
-  
+  it("allows destroying a $watch with a removal function", function() {
+    scope.aValue = 'abc';
+    scope.counter = 0;
+
+    var killSwitch = scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.counter++;
+      }
+    );
+
+    scope.$digest();
+    expect(scope.counter).toBe(1);
+
+    scope.aValue = 'def';
+    scope.$digest();
+    expect(scope.counter).toBe(2);
+
+    scope.aValue = 'ghi';
+    killSwitch();
+    scope.$digest();
+    expect(scope.counter).toBe(2);
+
+  });
 
 });
