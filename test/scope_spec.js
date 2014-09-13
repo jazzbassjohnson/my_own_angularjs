@@ -375,12 +375,12 @@ describe("digest", function() {
 
     expect(scope.counter).toBe(0);
 
-    setTimeout(function() {
-      // expect(scope.counter).toBe(1);
-      // fix() 'expect' function is not being called inside this setTimout
-      // console.log('expect was called inside the setTimeout')
-      // done();
-    }, 50);
+    waitFor(setTimeout(function() {
+          expect(scope.counter).toBe(1);
+          // fix() 'expect' function is not being called inside this setTimout
+          console.log('expect was called inside the setTimeout')
+          done();
+        }, 50));
   });
 
   it("runs a $$postDigest function after each digest", function(){
@@ -459,4 +459,39 @@ describe("digest", function() {
     expect(scope.counter).toBe(1);
   });
 
+  it("catches exceptions in $evalAsync", function() {
+    scope.aValue = 'abc';
+    scope.counter = 0;
+
+    scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.counter++;
+      }
+    );
+
+    scope.$evalAsync(function(scope) {
+      throw 'error';
+    });
+
+    waitFor(setTimeout(function() {
+          expect(scope.counter).toBe(0);
+          done();
+        }, 50));
+
+  });
+
+  it("catches expections in $$postDigest", function() {
+    var didCall = false;
+
+    scope.$$postDigest(function() {
+      throw 'error';
+    });
+
+    scope.$$postDigest(function() {
+      didCall = true;
+    });
+
+    expect(didCall).toBe(true);
+  });
 });
