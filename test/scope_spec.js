@@ -487,16 +487,17 @@ describe("digest", function() {
   });
 
   it("catches expections in $$postDigest", function() {
-    var didCall = false;
+    var didRun = false;
 
     scope.$$postDigest(function() {
       throw 'error';
     });
 
     scope.$$postDigest(function() {
-      didCall = true;
+      didRun = true;
     });
 
-    expect(didCall).toBe(true);
+    scope.$digest();
+    expect(didRun).toBe(true);
   });
 });
