@@ -4,8 +4,9 @@
 
 function Scope() {
   this.$$watchers = [];
-  this.$$lastDirtyWatch = 
+  this.$$lastDirtyWatch = null;
   this.$$asyncQueue = [];
+  this.$$phase = null;
 }
 
 function initWatchVal() {
@@ -88,3 +89,9 @@ Scope.prototype.$evalAsync = function(expr) {
     this.$$asyncQueue.push({ scope:this, expression: expr });
 };
 
+Scope.prototype.$beginPhase = function(phase) {
+    if(this.$$phase) {
+        throw this.$$phase + 'already in process'
+    }
+    this.$$phase = phase;
+}
