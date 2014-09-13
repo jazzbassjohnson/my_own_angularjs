@@ -500,4 +500,7 @@ describe("digest", function() {
     scope.$digest();
     expect(didRun).toBe(true);
   });
+
+  
+
 });
