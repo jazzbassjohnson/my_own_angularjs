@@ -585,4 +585,27 @@ describe("digest", function() {
     expect(scope.counter).toBe(1);
   });
 
+  it("allows destroying several $watches during digest", function() {
+    scope.aValue = 'abc';
+    scope.counter = 0;
+
+    var killSwitch_1 = scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        killSwitch_1();
+        killSwitch_2();
+      }
+    );
+
+    var killSwitch_2 = scope.$watch(
+      function(scope) { return scope.aValue; },
+      function(newValue, oldValue, scope) {
+        scope.counter++;
+      }
+    );
+
+    scope.$digest();
+    expect(scope.counter).toBe(0);
+  });
+
 });
