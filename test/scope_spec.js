@@ -640,5 +640,26 @@ describe("Scope", function() {
       expect(parent.aValue).toEqual([1, 2, 3, 4]);
     });
 
+    it("can watch a property on the parent scope", function() {
+      var parent = new Scope();
+      var child = parent.$new();
+      parent.aValue = [1, 2, 3];
+      child.counter = 0;
+
+      child.$watch(
+        function(scope) { return scope.aValue; },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        }
+      );
+
+      child.digest();
+      expect(child.counter).toBe(1);
+
+      parent.aValue.push(4);
+      child.digest();
+      expect(child.counter).toBe(2);
+    });
+
   });
 });
