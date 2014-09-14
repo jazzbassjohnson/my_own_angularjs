@@ -609,7 +609,16 @@ describe("Scope", function() {
   });
 
 
-  describe("inheritance", function() {
-    
+  describe("inheritance (child scope)", function() {
+
+    it("inherits the parent's properties", funciton() {
+      var parent = new Scope();
+      parent.aValue = [1, 2, 3];
+
+      var child = parent.$new();
+
+      expect(child.aValue).toBe([1, 2, 3]);
+    });
+
   });
 });
