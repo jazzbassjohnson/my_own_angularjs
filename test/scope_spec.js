@@ -611,13 +611,22 @@ describe("Scope", function() {
 
   describe("inheritance (child scope)", function() {
 
-    it("inherits the parent's properties", funciton() {
+    it("inherits the parent's properties", function() {
       var parent = new Scope();
       parent.aValue = [1, 2, 3];
 
       var child = parent.$new();
 
       expect(child.aValue).toBe([1, 2, 3]);
+    });
+
+    it("does not cause a parent to inherit its properties", function() {
+      var parent = new Scope();
+
+      var child = parent.$new();
+      child.aValue = 'abc';
+
+      expect(parent.aValue).toBeUndefined();
     });
 
   });
