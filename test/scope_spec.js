@@ -629,5 +629,16 @@ describe("Scope", function() {
       expect(parent.aValue).toBeUndefined();
     });
 
+    it("inherits the parent's properties whenever they are defined", function() {
+      var parent = new Scope();
+      var child = parent.$new();
+      parent.aValue = [1, 2, 3];
+
+      child.aValue.push(4);
+      
+      expect(child.aValue).toEqual([1, 2, 3, 4]);
+      expect(parent.aValue).toEqual([1, 2, 3, 4]);
+    });
+
   });
 });
