@@ -707,5 +707,17 @@ describe("Scope", function() {
       expect(child.car).toBe('Audi');
     });
 
+    it("does not shadow members of parent scope's attributes", function() {
+      var parent = new Scope();
+      var child = parent.$new();
+
+      parent.vehicle = {make: 'Prius'};
+      child.vehicle.make = 'Audi';
+
+      expect(parent.vehicle.make).toBe('Audi');
+      expect(child.vehicle.make).toBe('Audi');
+
+    });
+
   });
 });
