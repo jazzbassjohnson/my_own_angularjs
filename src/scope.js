@@ -96,6 +96,16 @@ Scope.prototype.$$digestOnce = function() {
     return dirty;
 };
 
+Scope.prototype.$$everyScope = function(fn) {
+    if(fn(this)) {
+        return this.$$children.every(function(child) {
+            return child.$$everyScope(fn);
+        });
+    } else {
+        return false;
+    }
+};
+
 Scope.prototype.$$areEqual = function(newValue, oldValue, valueEq) {
     if(valueEq) {
         return _.isEqual(newValue, oldValue);
@@ -151,7 +161,7 @@ Scope.prototype.$$postDigest = function(fn) {
 Scope.prototype.$new = function() {
     var ChildScope = function(){};
     ChildScope.prototype = this;
-    
+
     var child = new ChildScope();
 
     this.$$children.push(child);
