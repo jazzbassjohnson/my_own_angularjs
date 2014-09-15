@@ -696,5 +696,16 @@ describe("Scope", function() {
       expect(aaa.anotherValue).toBeUndefined();
     });
     
+    it("shadows a parent's property with the same name", function() {
+      var parent = new Scope();
+      var child = parent.$new();
+
+      parent.car = 'Prius';
+      child.car = 'Audi';
+
+      expect(parent.car).toBe('Prius');
+      expect(child.car).toBe('Audi');
+    });
+
   });
 });
