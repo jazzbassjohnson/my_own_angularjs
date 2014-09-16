@@ -381,7 +381,7 @@ describe("Scope", function() {
 
       setTimeout(function() {
             expect(scope.counter).toBe(1);
-            // fix() 'expect' function is not being called inside this setTimout
+            // fix() 'expect' function is not being called inside this setTimeout
             console.log('expect was called inside the setTimeout')
             done();
           }, 50);
@@ -611,6 +611,17 @@ describe("Scope", function() {
 
   describe("inheritance (child scope)", function() {
 
+    var scope;
+
+    beforeEach(function() {
+      jasmine.clock().install();
+      scope = new Scope();
+    });
+
+    afterEach(function() {
+      jasmine.clock().uninstall();
+    });
+    
     it("inherits the parent's properties", function() {
       var parent = new Scope();
       parent.aValue = [1, 2, 3];
@@ -772,7 +783,6 @@ describe("Scope", function() {
       var child1 = parent.$new();
       var child2 = child1.$new();
 
-
       parent.aValue = 'abc';
       parent.counter = 0;
       parent.$watch(
@@ -786,6 +796,29 @@ describe("Scope", function() {
 
       child2.$apply(function(scope) {});
       expect(parent.counter).toBe(1);
+    });
+
+    it("schedules a digest from root on $evalAsync", function() {
+      var parent = new Scope();
+      var child1 = parent.$new();
+      var child2 = child1.$new();
+
+      parent.aValue = 'something';
+      parent.counter = 0;
+      parent.$watch(
+        function(scope) { return scope.aValue; },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        }
+      );
+
+      child2.$evalAsync(function(scope) {});
+
+      setTimeout(function() {
+        expect(parent.counter).toBe(1);
+        done();
+      }, 50);
+
     });
 
   });
