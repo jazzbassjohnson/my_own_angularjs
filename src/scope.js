@@ -9,6 +9,7 @@ function Scope() {
   this.$$phase = null;
   this.$$postDigestQueue = [];
   this.$$children = [];
+  this.$$root = this;
 }
 
 function initWatchVal() {
@@ -129,7 +130,7 @@ Scope.prototype.$apply = function(expr) {
         return this.$eval(expr);
     } finally {
         this.$clearPhase();
-        this.$digest();
+        this.$root.$digest();
     }
 };
 
