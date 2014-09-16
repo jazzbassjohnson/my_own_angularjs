@@ -167,6 +167,7 @@ Scope.prototype.$new = function(isolated) {
     var child;
     if(isolated) {
         child = new Scope();
+        child.$$root = this.$$root;
     } else {
         var ChildScope = function(){};
         ChildScope.prototype = this;

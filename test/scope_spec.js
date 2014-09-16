@@ -878,6 +878,27 @@ describe("Scope", function() {
       expect(parent.counter).toBe(1);
     });
 
+    it("schedules a digest from root on $evalAsync when isolated", function() {
+      var parent = new Scope();
+      var child1 = parent.$new(true);
+      var child2 = child1.$new();
+
+      parent.aValue = 'abc';
+      parent.counter = 0;
+      parent.$watch(
+        function(scope) { return scope.aValue; },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        }
+      );
+
+      child2.$evalAsync(function(scope) {});
+
+      setTimeout(function() {
+        expect(parent.counter).toBe(1);
+        done();
+      }, 50);
+    });
 
   });
 });
