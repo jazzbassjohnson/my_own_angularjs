@@ -825,9 +825,26 @@ describe("Scope", function() {
       var parent = new Scope();
       var child = parent.$new(true);
 
-      parent.aValue = 'something';
+      parent.aValue = 'abc';
       expect(child.aValue).toBeUndefined();
     });
+
+    it("cannot watch parent attributes when issolated", function() {
+      var parent = new Scope();
+      var child = parent.$new(true);
+
+      parent.aValue = 'abc';
+      parent.$watch(
+        function(scope) { return scope.aValue; },
+        function(newValue, oldValue, scope) {
+          scope.aValueWas = newValue;
+        }
+      );
+
+      child.$digest();
+      expect(child.aValueWas).toBeUndefined();
+    });
+
 
   });
 });
