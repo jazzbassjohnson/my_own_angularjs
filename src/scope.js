@@ -130,7 +130,7 @@ Scope.prototype.$apply = function(expr) {
         return this.$eval(expr);
     } finally {
         this.$clearPhase();
-        this.$root.$digest();
+        this.$$root.$digest();
     }
 };
 
