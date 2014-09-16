@@ -829,7 +829,7 @@ describe("Scope", function() {
       expect(child.aValue).toBeUndefined();
     });
 
-    it("cannot watch parent attributes when issolated", function() {
+    it("cannot watch parent attributes when isolated", function() {
       var parent = new Scope();
       var child = parent.$new(true);
 
