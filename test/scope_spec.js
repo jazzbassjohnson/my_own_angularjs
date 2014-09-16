@@ -621,7 +621,7 @@ describe("Scope", function() {
     afterEach(function() {
       jasmine.clock().uninstall();
     });
-    
+
     it("inherits the parent's properties", function() {
       var parent = new Scope();
       parent.aValue = [1, 2, 3];
@@ -819,6 +819,14 @@ describe("Scope", function() {
         done();
       }, 50);
 
+    });
+
+    it("does not have access to the parent attributes when isolated", function() {
+      var parent = new Scope();
+      var child = parent.$new(true);
+
+      parent.aValue = 'something';
+      expect(child.aValue).toBeUndefined();
     });
 
   });
