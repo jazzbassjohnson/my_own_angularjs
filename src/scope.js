@@ -175,6 +175,8 @@ Scope.prototype.$new = function(isolated) {
         
     }
     this.$$children.push(child);
+    child.$$asyncQueue = this.$$asyncQueue;
+    child.$$postDigestQueue = this.$$postDigestQueue;
     child.$$watchers = [];
     child.$$children = [];
     return child;
