@@ -900,5 +900,17 @@ describe("Scope", function() {
       }, 50);
     });
 
+    it("executes $evalAsync functions on isolated scopes", function() {
+      var parent = new Scope();
+      var child = parent.$new(true);
+
+      child.$$postDigest(function() {
+        child.didPostDigest = true;
+      });
+      parent.$digest();
+
+      expect(child.didPostDigest).toBe(true);
+    });
+
   });
 });
