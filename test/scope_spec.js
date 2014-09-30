@@ -960,7 +960,7 @@ describe("Scope", function() {
       scope.aValue = 42;
       scope.counter = 0;
 
-      scope.$watch(
+      scope.$watchCollection(
         function(scope) { return scope.aValue; },
         function(newValue, oldValue, scope) {
           valueProvided = newValue;
