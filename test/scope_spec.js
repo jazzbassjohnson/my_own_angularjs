@@ -916,14 +916,15 @@ describe("Scope", function() {
       var parent = new Scope();
       var child = parent.$new();
 
-      child.aValue = 'abc';
+      child.aValue = [1, 2, 3];
       child.counter = 0;
 
       child.$watch(
         function(scope) { return scope.aValue; },
         function(newValue, oldValue, scope) {
           scope.counter++;
-        }
+        },
+        true
       );
 
       parent.$digest();
