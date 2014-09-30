@@ -984,7 +984,7 @@ describe("Scope", function() {
       scope.aValue = 0/0;
       scope.counter = 0;
 
-      scope.$watch(
+      scope.$watchCollection(
         function(scope) { return scope.aValue; },
         function(newValue, oldValue, scope) {
           scope.counter++;
