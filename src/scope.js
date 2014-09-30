@@ -204,7 +204,7 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
     var internalWatchFn = function(scope){
         newValue = watchFn(scope);
 
-        if(newValue !== oldValue) {
+        if(!self.$$areEqual(newValue, oldValue, false)) {
             changeCounter++;
         }
 
