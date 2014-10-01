@@ -1034,6 +1034,7 @@ describe("Scope", function() {
     expect(scope.counter).toBe(1);
 
     scope.arr.push(5);
+    scope.$digest();
     expect(scope.counter).toBe(2);
 
     scope.$digest();
@@ -1056,6 +1057,7 @@ describe("Scope", function() {
     expect(scope.counter).toBe(1);
 
     scope.arr.shift();
+    scope.$digest();
     expect(scope.counter).toBe(2);
 
     scope.$digest();
