@@ -206,20 +206,19 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
 
         if(_.isObject(newValue)) {
             if(_.isArray(newValue)) {
-
+                if(!_.isArray(oldValue)) {
+                    changeCounter++;
+                    oldValue = [];
+                }
             } else {
 
             }
         } else {
-
             if(!self.$$areEqual(newValue, oldValue, false)) {
                 changeCounter++;
             }
-            
+            oldValue = newValue;
         }
-
-
-        oldValue = newValue;
 
         return changeCounter;
 
