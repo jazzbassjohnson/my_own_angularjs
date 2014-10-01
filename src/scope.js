@@ -214,6 +214,12 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
                     changeCounter++;
                     oldValue.length = newValue.length;
                 }
+                _.forEach(newValue, function(newItem, i) {
+                    if(newItem !== oldValue[i]) {
+                        changeCounter++;
+                        oldValue[i] = newItem;
+                    }
+                });
             } else {
 
             }
