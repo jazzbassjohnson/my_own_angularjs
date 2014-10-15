@@ -1148,7 +1148,7 @@ describe("Scope", function() {
       document.documentElement.appendChild(document.createElement('div'));
       scope.arrayLike = document.getElementsByTagName('div');
 
-      scope.couinter = 0;
+      scope.counter = 0;
 
       scope.$watchCollection(
         function(scope) { return scope.arrayLike; },
