@@ -1168,5 +1168,24 @@ describe("Scope", function() {
       expect(scope.counter).toBe(2);
     });
 
+    it("notices when the value becomes an object", function() {
+      scope.counter = 0;
+
+      scope.$watchCollection(
+        function(scope) { return scope.anObj; },
+        function(newValue, oldValue, scope) { scope.counter++; }
+      );
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+
+      scope.anObj = { a : 1 };
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+    });
+
   });
 });
