@@ -215,7 +215,8 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
                     oldValue.length = newValue.length;
                 }
                 _.forEach(newValue, function(newItem, i) {
-                    if(newItem !== oldValue[i]) {
+                    var bothNaN = _.isNaN(newItem) && _.isNaN(oldValue[i]);
+                    if(!bothNaN && newItem !== oldValue[i]) {
                         changeCounter++;
                         oldValue[i] = newItem;
                     }
