@@ -1144,5 +1144,29 @@ describe("Scope", function() {
 
     });
 
+    it("notices an item replaced in a NodeList object", function() {
+      document.documentElement.appendChild(document.createElement('div'));
+      scope.arrayLike = document.getElementsByTagName('div');
+
+      scope.couinter = 0;
+
+      scope.$watchCollection(
+        function(scope) { return scope.arrayLike; },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        } 
+      );
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+
+      document.documentElement.appendChild(document.createElement('div'));
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+    });
+
   });
 });
