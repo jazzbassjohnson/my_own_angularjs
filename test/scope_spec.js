@@ -1230,5 +1230,23 @@ describe("Scope", function() {
       expect(scope.counter).toBe(2);
 
     });
+
+    it("does not fail on NaN attributes on objects", function() {
+      scope.obj = {aValue: NaN};
+      scope.counter = 0;
+
+      scope.$watchCollection(
+        function(scope) {return scope.obj;},
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        }
+      );
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+    });
   });
 });
