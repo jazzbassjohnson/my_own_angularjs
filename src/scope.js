@@ -198,12 +198,13 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
     var self = this;
     var newValue;
     var oldValue;
+    var oldLength;
     var changeCounter = 0;
     var key;
 
 
     var internalWatchFn = function(scope){
-        var key;
+        var newLength, key;
         newValue = watchFn(scope);
 
         if(_.isObject(newValue)) {
@@ -227,20 +228,36 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
                 if(!_.isObject(oldValue) || _.isArrayLike(oldValue)) {
                     changeCounter++;
                     oldValue = {};
+                    oldLength = 0;
                 }
-                _.forOwn(newValue, function(newItem, key) {
-                    var bothNaN = _.isNaN(newItem) && _.isNaN(oldValue[key]);
-                    if(!bothNaN && (oldValue[key] !== newItem)) {
+                newLength = 0;
+                _.forOwn(newValue, function(newVal, key) {
+                    newLength++;
+                    // if key exists on object
+                    if(oldValue.hasOwnProperty(key)) {
+                        //check to see if the propert has change
+                        var bothNaN = _.isNaN(newVal) && _.isNaN(oldValue[key]);
+                        if(!bothNaN && (oldValue[key] !== newVal)) {
+                            changeCounter++;
+                            oldValue[key] = newVal;
+                        }
+                    } else {
+                    // else, add the property to the object
                         changeCounter++;
-                        oldValue[key] = newItem;
+                        oldValue[key] = newVal;
+                        oldLength++;
                     }
                 });
-                _.forOwn(oldValue, function(oldItem, key) {
-                    if(!newValue.hasOwnProperty(key)) {
-                        changeCounter++;
-                        delete oldValue[key];
-                    }
-                });
+                // check for properties removed from the  object
+                if(oldLength > newLength) {
+                    changeCounter++;
+                    _.forOwn(oldValue, function(oldItem, key) {
+                        if(!newValue.hasOwnProperty(key)) {
+                            oldLength--;
+                            delete oldValue[key];
+                        }
+                    });
+                }
             }
         } else {
             if(!self.$$areEqual(newValue, oldValue, false)) {
