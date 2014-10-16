@@ -1309,9 +1309,28 @@ describe("Scope", function() {
 
       scope.aValue = 43;
       scope.$digest();
+      
       expect(oldValueGiven).toBe(42);
     });
 
+    it("gives the old array value to the listeners", function() {
+      scope.arr = [1, 2, 3];
+      var oldValueGiven;
+
+      scope.$watchCollection(
+        function(scope) { return scope.arr; },
+        function( newValue, oldValue, scope ) {
+          oldValueGiven = oldValue;
+        }
+      );
+
+      scope.$digest();
+
+      scope.arr.push(4);
+      scope.$digest();
+
+      expect(oldValueGiven).toBe([1, 2, 3]);
+    });
 
 
   });
