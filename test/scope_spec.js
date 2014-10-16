@@ -1248,5 +1248,32 @@ describe("Scope", function() {
       scope.$digest();
       expect(scope.counter).toBe(1);
     });
+
+    it("notices when an attribute has been removed from an object", function() {
+      scope.obj = {a:1};
+      scope.counter = 0;
+
+      scope.$watchCollection(
+        function(scope) { return scope.obj },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+        }
+      );
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+      
+
+      delete scope.obj.a;
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+      console.log(scope.obj.a);
+
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+    });
+
+
+
   });
 });
