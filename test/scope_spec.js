@@ -1309,7 +1309,7 @@ describe("Scope", function() {
 
       scope.aValue = 43;
       scope.$digest();
-      
+
       expect(oldValueGiven).toBe(42);
     });
 
@@ -1329,7 +1329,26 @@ describe("Scope", function() {
       scope.arr.push(4);
       scope.$digest();
 
-      expect(oldValueGiven).toBe([1, 2, 3]);
+      expect(oldValueGiven).toEqual([1, 2, 3]);
+    });
+
+    it("gives the old object value to the listeners", function() {
+      scope.obj = {a:1, b:2};
+      var oldValueGiven;
+
+      scope.$watchCollection(
+        function(scope) { return scope.obj; },
+        function( newValue, oldValue, scope ) {
+          oldValueGiven = oldValue;
+        }
+      );
+
+      scope.$digest();
+
+      scope.obj.c = 3;
+      scope.$digest();
+
+      expect(oldValueGiven).toEqual({a:1, b:2});
     });
 
 
