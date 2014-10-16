@@ -1208,5 +1208,27 @@ describe("Scope", function() {
       expect(scope.counter).toBe(2);
 
     });
+
+    it("notcies when an attribute changes on n object", function() {
+      scope.obj = {a:1};
+      scope.counter = 0;
+
+      scope.$watchCollection(
+        function(scope) { return scope.obj; },
+        function(newValue, oldValue, scope) {
+          scope.counter++;
+      });
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+
+      scope.obj.a = 2;
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+
+    });
   });
 });
