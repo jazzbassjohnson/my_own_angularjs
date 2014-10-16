@@ -1294,6 +1294,24 @@ describe("Scope", function() {
       expect(scope.counter).toBe(2);
     });
 
+    it("gives old non-collection values to the listeners", function() {
+      scope.aValue = 42;
+      var oldValueGiven;
+
+      scope.$watchCollection(
+        function(scope) { return scope.aValue; },
+        function( newValue, oldValue, scope ) {
+          oldValueGiven = oldValue;
+        }
+      );
+
+      scope.$digest();
+
+      scope.aValue = 43;
+      scope.$digest();
+      expect(oldValueGiven).toBe(42);
+    });
+
 
 
   });
