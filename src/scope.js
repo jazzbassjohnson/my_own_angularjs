@@ -203,6 +203,7 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
 
 
     var internalWatchFn = function(scope){
+        var key;
         newValue = watchFn(scope);
 
         if(_.isObject(newValue)) {
@@ -228,7 +229,8 @@ Scope.prototype.$watchCollection = function(watchFn, listenerFn) {
                     oldValue = {};
                 }
                 _.forOwn(newValue, function(newItem, key) {
-                    if(oldValue[key] !== newItem) {
+                    var bothNaN = _.isNaN(newItem) && _.isNaN(oldValue[key]);
+                    if(!bothNaN && oldValue[key] !== newItem) {
                         changeCounter++;
                         oldValue[key] = newItem;
                     }
