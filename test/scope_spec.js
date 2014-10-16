@@ -1262,12 +1262,33 @@ describe("Scope", function() {
 
       scope.$digest();
       expect(scope.counter).toBe(1);
-      
 
       delete scope.obj.a;
       scope.$digest();
       expect(scope.counter).toBe(2);
       console.log(scope.obj.a);
+
+      scope.$digest();
+      expect(scope.counter).toBe(2);
+    });
+
+    it("does not consider any object with a length property an array", function() {
+      scope.obj = {length: 42, otherKey: 'baseball'};
+      scope.counter = 0;
+
+      scope.$watchCollection(
+        function(scope) { return scope.obj; },
+        function( newValue, oldValue, scope ) {
+          scope.counter++;
+        }
+      );
+
+      scope.$digest();
+      expect(scope.counter).toBe(1);
+
+      scope.obj.newKey = '1915';
+      scope.$digest();
+      expect(scope.counter).toBe(2);
 
       scope.$digest();
       expect(scope.counter).toBe(2);
